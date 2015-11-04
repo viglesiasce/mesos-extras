@@ -46,7 +46,7 @@ file '/etc/marathon/conf/master' do
   notifies :restart, 'service[marathon]', :immediately
 end
 file '/etc/marathon/conf/zk' do
-  content node['mesos']['master']['zk'].rstrip('mesos') + 'marathon'
+  content node['mesos']['master']['zk'].gsub('marathon')
   notifies :restart, 'service[marathon]', :immediately
 end
 

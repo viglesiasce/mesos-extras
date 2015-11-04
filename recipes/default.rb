@@ -15,10 +15,6 @@ docker_service 'default' do
    action [:create, :start]
 end
 
-env_hosts = search(:node, "chef_environment:#{node.chef_environment}")
-zookeeper_hosts = env_hosts.map {|node| node[:ipaddress] + ':2181'}
-zookeeper_url = 'zk://' + zookeeper_hosts.join(",")
-
 if node.has_key? 'gce'
   hostname = node['gce']['instance']['hostname']
 elsif node.has_key? 'ec2'
@@ -46,11 +42,11 @@ file '/etc/marathon/conf/hostname' do
   notifies :restart, 'service[marathon]', :immediately
 end
 file '/etc/marathon/conf/master' do
-  content zookeeper_url + '/mesos'
+  content node['mesos']['master']['zk']
   notifies :restart, 'service[marathon]', :immediately
 end
 file '/etc/marathon/conf/zk' do
-  content zookeeper_url + '/marathon'
+  content node['mesos']['master']['zk'].rstrip('mesos') + 'marathon'
   notifies :restart, 'service[marathon]', :immediately
 end
 

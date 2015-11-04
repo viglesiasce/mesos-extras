@@ -1,0 +1,20 @@
+{
+"cmd": "/root/mesos-dns -config=/root/config.json",
+"cpus": 0.1,
+"mem": 128,
+"ports": [53],
+"requirePorts": true,
+"id": "mesos-dns",
+"instances": 3,
+"constraints": [["hostname", "UNIQUE"]],
+"healthChecks": [
+  {
+    "portIndex": 0,
+    "protocol": "TCP",
+    "gracePeriodSeconds": 60,
+    "intervalSeconds": 60,
+    "timeoutSeconds": 10,
+    "maxConsecutiveFailures": 3
+  }
+]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "kibana",
+  "cpus": 0.2,
+  "mem": 128.0,
+  "instances": 1,
+  "ports": [5601],
+  "requirePorts": true,
+  "env": {
+    "ELASTICSEARCH_URL": "http://search.marathon.mesos:9200/"
+  },
+  "constraints": [["hostname", "UNIQUE"]],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "kibana",
+      "network": "HOST"
+    }
+  },
+  "dependencies": ["/search"],
+  "healthChecks": [
+    {
+      "path": "/",
+      "portIndex": 0,
+      "protocol": "HTTP",
+      "gracePeriodSeconds": 60,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 10,
+      "maxConsecutiveFailures": 3
+    }
+  ]
+}

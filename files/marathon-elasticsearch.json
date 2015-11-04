@@ -1,0 +1,28 @@
+{
+    "id": "search",
+    "container": {
+        "docker": {
+            "image": "elasticsearch",
+            "network": "HOST"
+        },
+        "type": "DOCKER"
+    },
+    "constraints": [["hostname", "UNIQUE"]],
+    "cpus": 0.5,
+    "mem": 768,
+    "ports": [9200],
+    "requirePorts": true,
+    "cmd": "elasticsearch",
+    "instances": 2,
+    "healthChecks": [
+      {
+        "path": "/_cluster/health?wait_for_status=green",
+        "portIndex": 0,
+        "protocol": "HTTP",
+        "gracePeriodSeconds": 120,
+        "intervalSeconds": 60,
+        "timeoutSeconds": 10,
+        "maxConsecutiveFailures": 3
+      }
+    ]
+}

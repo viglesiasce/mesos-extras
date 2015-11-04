@@ -23,6 +23,7 @@ else
   raise 'Unable to find hostname in node attributes'
 end
 
+mesos_zk_url = node['mesos']['master']['flags']['zk']
 node.override[:mesos][:master][:flags][:hostname] = hostname
 node.override[:mesos][:slave][:flags][:hostname] = hostname
 node.save
@@ -42,11 +43,11 @@ file '/etc/marathon/conf/hostname' do
   notifies :restart, 'service[marathon]', :immediately
 end
 file '/etc/marathon/conf/master' do
-  content node['mesos']['master']['zk']
+  content mesos_zk_url
   notifies :restart, 'service[marathon]', :immediately
 end
 file '/etc/marathon/conf/zk' do
-  content node['mesos']['master']['zk'].gsub('marathon')
+  content mesos_zk_url.gsub('marathon')
   notifies :restart, 'service[marathon]', :immediately
 end
 

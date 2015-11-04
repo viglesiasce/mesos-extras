@@ -47,7 +47,7 @@ file '/etc/marathon/conf/master' do
   notifies :restart, 'service[marathon]', :immediately
 end
 file '/etc/marathon/conf/zk' do
-  content mesos_zk_url.gsub('marathon')
+  content mesos_zk_url.gsub('mesos', 'marathon')
   notifies :restart, 'service[marathon]', :immediately
 end
 

@@ -59,12 +59,12 @@ remote_file '/root/mesos-dns' do
   mode '0755'
 end
 
-mesos_hosts = env_hosts.map {|node| '"' + node[:ipaddress] + ':5050"'}
+
 dns_server = `cat /etc/resolv.conf | grep -i nameserver | tail -n1 | cut -d ' ' -f2`.strip
 template "/root/config.json" do
   source 'mesos-dns.json.erb'
   variables(
-    :mesos_hosts  => mesos_hosts,
+    :mesos_hosts  => node["mesos"]["mesos-hosts"],
     :resolver => dns_server
   )
   mode 00644
